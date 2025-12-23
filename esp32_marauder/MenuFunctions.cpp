@@ -2436,12 +2436,12 @@ void MenuFunctions::RunSetup()
     this->renderGraphUI(BT_SCAN_ANALYZER);
     wifi_scan_obj.StartScan(BT_SCAN_ANALYZER, TFT_CYAN);
   });
-  this->addNodes(&bluetoothSnifferMenu, "Anti-Privacy Scan", TFTORANGE, NULL, FLOCK, [this]() {
+  this->addNodes(&bluetoothSnifferMenu, "Anti-Privacy (WiFi+BLE)", TFTORANGE, NULL, FLOCK, [this]() {
     display_obj.clearScreen();
     this->drawStatusBar();
     wifi_scan_obj.StartScan(BT_SCAN_FLOCK, TFT_ORANGE);
   });
-  this->addNodes(&bluetoothSnifferMenu, "Anti-Privacy Wardrive", TFTCYAN, NULL, FLOCK, [this]() {
+  this->addNodes(&bluetoothSnifferMenu, "Anti-Privacy + GPS", TFTCYAN, NULL, FLOCK, [this]() {
     display_obj.clearScreen();
     this->drawStatusBar();
     wifi_scan_obj.StartScan(BT_SCAN_FLOCK_WARDRIVE, TFT_CYAN);
