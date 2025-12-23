@@ -28,6 +28,7 @@
   //#define MARAUDER_CYD_GUITION // ESP32-2432S024 GUITION
   //#define MARAUDER_CYD_3_5_INCH
   //#define MARAUDER_C5
+  //#define MARAUDER_C6
   //#define MARAUDER_CARDPUTER
   //#define MARAUDER_V8
   //// END BOARD TARGETS
@@ -81,6 +82,8 @@
     #define HARDWARE_NAME "XIAO ESP32 S3"
   #elif defined(MARAUDER_C5)
     #define HARDWARE_NAME "ESP32-C5 DevKit"
+  #elif defined(MARAUDER_C6)
+    #define HARDWARE_NAME "ESP32-C6 DevKit"
   #elif defined(MARAUDER_V8)
     #define HARDWARE_NAME "Marauder v8"
   #else
@@ -417,6 +420,24 @@
     #define HAS_SD
     #define USE_SD
     #define HAS_DUAL_BAND
+    //#define HAS_PSRAM
+    //#define HAS_TEMP_SENSOR
+  #endif
+
+  #ifdef MARAUDER_C6
+    //#define HAS_FLIPPER_LED
+    //#define FLIPPER_ZERO_HAT
+    //#define HAS_BATTERY
+    #define HAS_BT
+    //#define HAS_BUTTONS
+    #define HAS_NEOPIXEL_LED
+    //#define HAS_PWR_MGMT
+    //#define HAS_SCREEN
+    #define HAS_GPS
+    //#define HAS_SD
+    //#define USE_SD
+    // C6 supports WiFi 6 (2.4GHz) - keep single band for now until dual-band tested
+    //#define HAS_DUAL_BAND
     //#define HAS_PSRAM
     //#define HAS_TEMP_SENSOR
   #endif
@@ -2146,6 +2167,10 @@
       #define SD_CS 10
     #endif
 
+    #ifdef MARAUDER_C6
+      #define SD_CS 10
+    #endif
+
     #ifdef MARAUDER_V8
       #define SD_CS 10
     #endif
@@ -2249,6 +2274,8 @@
     #define MEM_LOWER_LIM 10000
   #elif defined(MARAUDER_C5)
     #define MEM_LOWER_LIM 10000
+  #elif defined(MARAUDER_C6)
+    #define MEM_LOWER_LIM 10000
   #elif defined(MARAUDER_V8)
     #define MEM_LOWER_LIM 10000
   #endif
@@ -2271,6 +2298,8 @@
       #define PIN 22
     #elif defined(MARAUDER_C5)
       #define PIN 27
+    #elif defined(MARAUDER_C6)
+      #define PIN 8  // C6-DevKitC-1 has RGB LED on GPIO8
     #elif defined(MARAUDER_V8)
       #define PIN 27
     #else
@@ -2366,6 +2395,10 @@
       #define GPS_SERIAL_INDEX 1
       #define GPS_TX 14
       #define GPS_RX 13
+    #elif defined(MARAUDER_C6)
+      #define GPS_SERIAL_INDEX 1
+      #define GPS_TX 16  // C6-DevKitC-1 UART1 TX
+      #define GPS_RX 17  // C6-DevKitC-1 UART1 RX
     #elif defined(MARAUDER_V8)
       #define GPS_SERIAL_INDEX 1
       #define GPS_TX 14
@@ -2471,6 +2504,8 @@
     #define MARAUDER_TITLE_BYTES 13578
   #elif defined(MARAUDER_C5)
     #define MARAUDER_TITLE_BYTES 13578
+  #elif defined(MARAUDER_C6)
+    #define MARAUDER_TITLE_BYTES 13578
   #elif defined(MARAUDER_V8)
     #define MARAUDER_TITLE_BYTES 13578
   #else
@@ -2526,6 +2561,12 @@
     #endif
 
     #ifdef MARAUDER_C5
+      #define SD_MISO 2
+      #define SD_MOSI 7
+      #define SD_SCK  6
+    #endif
+
+    #ifdef MARAUDER_C6
       #define SD_MISO 2
       #define SD_MOSI 7
       #define SD_SCK  6

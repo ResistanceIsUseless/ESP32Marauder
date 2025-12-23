@@ -601,6 +601,10 @@ class WiFiScan
     void parseBSSID(const char* bssidStr, uint8_t* bssid);
     void writeHeader(bool poi = false);
     void writeFooter(bool poi = false);
+    bool checkFlockMacOUI(const char* mac_addr);
+    bool checkProximityBeaconOUI(const char* mac_addr);
+    bool checkRavenServiceUUID(const char* uuid);
+    String getRavenServiceDescription(const char* uuid);
 
 
   public:
@@ -629,11 +633,58 @@ class WiFiScan
     bool ep_deauth = false;
     bool ble_scanning = false;
 
-    char* flock_ssid[4] = {
+    // Enhanced Flock Safety and surveillance device detection patterns
+    char* flock_ssid[6] = {
       "flock",
       "penguin",
       "pigvision",
-      "fs ext battery"
+      "fs ext battery",
+      "fs_",
+      "raven"
+    };
+
+    // Known Flock Safety and surveillance device MAC OUI prefixes
+    // Source: deflock.me database and real-world device captures
+    const char* flock_mac_oui[20] = {
+      // FS Ext Battery devices
+      "58:8e:81", "cc:cc:cc", "ec:1b:bd", "90:35:ea", "04:0d:84",
+      "f0:82:c0", "1c:34:f1", "38:5b:44", "94:34:69", "b4:e3:f9",
+      // Flock WiFi devices
+      "70:c9:4e", "3c:91:80", "d8:f3:bc", "80:30:49", "14:5a:fc",
+      "74:4c:a1", "08:3a:88", "9c:2f:9d", "94:08:53", "e4:aa:ea"
+    };
+
+    // Raven gunshot detector BLE service UUIDs
+    // Source: raven_configurations.json (GainSec research)
+    const char* raven_service_uuids[8] = {
+      "0000180a-0000-1000-8000-00805f9b34fb",  // Device Information Service
+      "00003100-0000-1000-8000-00805f9b34fb",  // GPS Location Service (1.2.0+)
+      "00003200-0000-1000-8000-00805f9b34fb",  // Power Management Service (1.2.0+)
+      "00003300-0000-1000-8000-00805f9b34fb",  // Network Status Service (1.2.0+)
+      "00003400-0000-1000-8000-00805f9b34fb",  // Upload Statistics Service (1.2.0+)
+      "00003500-0000-1000-8000-00805f9b34fb",  // Error/Failure Service (1.2.0+)
+      "00001809-0000-1000-8000-00805f9b34fb",  // Health Thermometer (1.1.7 legacy)
+      "00001819-0000-1000-8000-00805f9b34fb"   // Location/Navigation (1.1.7 legacy)
+    };
+
+    // Proximity marketing beacon OUI prefixes
+    // Common Bluetooth marketing beacons (iBeacon, Eddystone, etc.)
+    const char* proximity_beacon_oui[15] = {
+      "ac:23:3f",  // Estimote beacons
+      "f0:f8:f2",  // Kontakt.io beacons
+      "d0:39:72",  // Gimbal beacons
+      "c7:5e:d2",  // Radius Networks beacons
+      "e3:0a:39",  // BlueCats beacons
+      "f7:82:6d",  // Sensoro beacons
+      "d4:f5:13",  // Aruba beacons
+      "00:16:a4",  // Cisco Meraki beacons
+      "f4:b8:5e",  // Minew beacons
+      "ac:bc:32",  // Raspberry Pi beacons
+      "5c:31:3e",  // Espressif (ESP32) beacons
+      "24:0a:c4",  // Espressif (ESP32) beacons
+      "a4:cf:12",  // Espressif (ESP32) beacons
+      "30:ae:a4",  // Espressif (ESP32) beacons
+      "cc:50:e3"   // Espressif (ESP32) beacons
     };
 
     #ifdef HAS_DUAL_BAND

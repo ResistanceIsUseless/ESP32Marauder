@@ -618,11 +618,98 @@ extern "C" {
               }
             }
 
+            // Get MAC and RSSI for all checks
+            String mac = advertisedDevice->getAddress().toString().c_str();
+            mac.toUpperCase();
+            int rssi = advertisedDevice->getRSSI();
+
+            // Check for Raven gunshot detector service UUIDs
+            bool isRaven = false;
+            String ravenService = "";
+            if (advertisedDevice->haveServiceUUID()) {
+              for (int i = 0; i < 8; i++) {
+                if (advertisedDevice->isAdvertisingService(BLEUUID(wifi_scan_obj.raven_service_uuids[i]))) {
+                  isRaven = true;
+                  ravenService = wifi_scan_obj.raven_service_uuids[i];
+                  break;
+                }
+              }
+            }
+
+            // Check for proximity marketing beacon OUI
+            bool isProximityBeacon = wifi_scan_obj.checkProximityBeaconOUI(mac.c_str());
+
+            // Display Raven detection
+            if (isRaven) {
+              String serviceDesc = wifi_scan_obj.getRavenServiceDescription(ravenService.c_str());
+              Serial.println(F("[RAVEN GUNSHOT DETECTOR DETECTED]"));
+              Serial.print(F("  RSSI: "));
+              Serial.println(rssi);
+              Serial.print(F("  MAC:  "));
+              Serial.println(mac);
+              Serial.print(F("  Name: "));
+              Serial.println(name);
+              Serial.print(F("  Service: "));
+              Serial.println(serviceDesc);
+
+              #ifdef HAS_SCREEN
+                String display_string = "";
+                display_string.concat(RED_KEY);
+                display_string.concat(String(rssi));
+                display_string.concat(" ");
+                display_string.concat(mac);
+                display_string.concat(" [RAVEN] ");
+                display_string.concat(serviceDesc);
+
+                uint8_t temp_len = display_string.length();
+                for (uint8_t i = 0; i < 40 - temp_len; i++) {
+                  display_string.concat(" ");
+                }
+
+                if (!display_obj.printing) {
+                  display_obj.loading = true;
+                  display_obj.display_buffer->add(display_string);
+                  display_obj.loading = false;
+                }
+              #endif
+            }
+
+            // Display proximity beacon detection
+            if (isProximityBeacon) {
+              Serial.println(F("[PROXIMITY MARKETING BEACON DETECTED]"));
+              Serial.print(F("  RSSI: "));
+              Serial.println(rssi);
+              Serial.print(F("  MAC:  "));
+              Serial.println(mac);
+              Serial.print(F("  Name: "));
+              Serial.println(name);
+
+              #ifdef HAS_SCREEN
+                String display_string = "";
+                display_string.concat(YELLOW_KEY);
+                display_string.concat(String(rssi));
+                display_string.concat(" ");
+                display_string.concat(mac);
+                display_string.concat(" [PROX BEACON] ");
+                if (name.length() > 0) {
+                  display_string.concat(name);
+                }
+
+                uint8_t temp_len = display_string.length();
+                for (uint8_t i = 0; i < 40 - temp_len; i++) {
+                  display_string.concat(" ");
+                }
+
+                if (!display_obj.printing) {
+                  display_obj.loading = true;
+                  display_obj.display_buffer->add(display_string);
+                  display_obj.loading = false;
+                }
+              #endif
+            }
+
             // Final decision on marking as Flock Penguin battery
             if (hasXuntongMfg && (penguin || name.length() == 0)) {
-              String mac = advertisedDevice->getAddress().toString().c_str();
-              mac.toUpperCase();
-              int rssi = advertisedDevice->getRSSI();
 
               Serial.println(F("[FLOCK PENGUIN BATTERY CANDIDATE]"));
               Serial.print(F("  RSSI: "));
@@ -1350,11 +1437,98 @@ extern "C" {
               }
             }
 
+            // Get MAC and RSSI for all checks
+            String mac = advertisedDevice->getAddress().toString().c_str();
+            mac.toUpperCase();
+            int rssi = advertisedDevice->getRSSI();
+
+            // Check for Raven gunshot detector service UUIDs
+            bool isRaven = false;
+            String ravenService = "";
+            if (advertisedDevice->haveServiceUUID()) {
+              for (int i = 0; i < 8; i++) {
+                if (advertisedDevice->isAdvertisingService(BLEUUID(wifi_scan_obj.raven_service_uuids[i]))) {
+                  isRaven = true;
+                  ravenService = wifi_scan_obj.raven_service_uuids[i];
+                  break;
+                }
+              }
+            }
+
+            // Check for proximity marketing beacon OUI
+            bool isProximityBeacon = wifi_scan_obj.checkProximityBeaconOUI(mac.c_str());
+
+            // Display Raven detection
+            if (isRaven) {
+              String serviceDesc = wifi_scan_obj.getRavenServiceDescription(ravenService.c_str());
+              Serial.println(F("[RAVEN GUNSHOT DETECTOR DETECTED]"));
+              Serial.print(F("  RSSI: "));
+              Serial.println(rssi);
+              Serial.print(F("  MAC:  "));
+              Serial.println(mac);
+              Serial.print(F("  Name: "));
+              Serial.println(name);
+              Serial.print(F("  Service: "));
+              Serial.println(serviceDesc);
+
+              #ifdef HAS_SCREEN
+                String display_string = "";
+                display_string.concat(RED_KEY);
+                display_string.concat(String(rssi));
+                display_string.concat(" ");
+                display_string.concat(mac);
+                display_string.concat(" [RAVEN] ");
+                display_string.concat(serviceDesc);
+
+                uint8_t temp_len = display_string.length();
+                for (uint8_t i = 0; i < 40 - temp_len; i++) {
+                  display_string.concat(" ");
+                }
+
+                if (!display_obj.printing) {
+                  display_obj.loading = true;
+                  display_obj.display_buffer->add(display_string);
+                  display_obj.loading = false;
+                }
+              #endif
+            }
+
+            // Display proximity beacon detection
+            if (isProximityBeacon) {
+              Serial.println(F("[PROXIMITY MARKETING BEACON DETECTED]"));
+              Serial.print(F("  RSSI: "));
+              Serial.println(rssi);
+              Serial.print(F("  MAC:  "));
+              Serial.println(mac);
+              Serial.print(F("  Name: "));
+              Serial.println(name);
+
+              #ifdef HAS_SCREEN
+                String display_string = "";
+                display_string.concat(YELLOW_KEY);
+                display_string.concat(String(rssi));
+                display_string.concat(" ");
+                display_string.concat(mac);
+                display_string.concat(" [PROX BEACON] ");
+                if (name.length() > 0) {
+                  display_string.concat(name);
+                }
+
+                uint8_t temp_len = display_string.length();
+                for (uint8_t i = 0; i < 40 - temp_len; i++) {
+                  display_string.concat(" ");
+                }
+
+                if (!display_obj.printing) {
+                  display_obj.loading = true;
+                  display_obj.display_buffer->add(display_string);
+                  display_obj.loading = false;
+                }
+              #endif
+            }
+
             // Final decision on marking as Flock Penguin battery
             if (hasXuntongMfg && (penguin || name.length() == 0)) {
-              String mac = advertisedDevice->getAddress().toString().c_str();
-              mac.toUpperCase();
-              int rssi = advertisedDevice->getRSSI();
 
               Serial.println(F("[FLOCK PENGUIN BATTERY CANDIDATE]"));
               Serial.print(F("  RSSI: "));
@@ -4873,8 +5047,8 @@ void WiFiScan::RunProbeScan(uint8_t scan_mode, uint16_t color)
       if (scan_mode != BT_SCAN_FLOCK)
         display_obj.tft.drawCentreString(text_table4[40],TFT_WIDTH / 2,16,2);
       else {
-        Serial.println(F("Starting WiFi sniff for Flock..."));
-        display_obj.tft.drawCentreString("Flock Sniff",TFT_WIDTH / 2,16,2);
+        Serial.println(F("Starting Anti-Privacy Scan (Flock/Raven/Beacons)..."));
+        display_obj.tft.drawCentreString("Anti-Privacy Scan",TFT_WIDTH / 2,16,2);
       }
     #endif
     #ifdef HAS_ILI9341
@@ -5058,9 +5232,9 @@ void WiFiScan::RunBluetoothScan(uint8_t scan_mode, uint16_t color)
           else if (scan_mode == BT_SCAN_FLIPPER)
             display_obj.tft.drawCentreString("Flipper Sniff", TFT_WIDTH / 2, 16, 2);
           else if (scan_mode == BT_SCAN_FLOCK)
-            display_obj.tft.drawCentreString("Flock Sniff", TFT_WIDTH / 2, 16, 2);
+            display_obj.tft.drawCentreString("Anti-Privacy Scan", TFT_WIDTH / 2, 16, 2);
           else if (scan_mode == BT_SCAN_FLOCK_WARDRIVE)
-            display_obj.tft.drawCentreString("Flock Wardrive", TFT_WIDTH / 2, 16, 2);
+            display_obj.tft.drawCentreString("Anti-Privacy WD", TFT_WIDTH / 2, 16, 2);
           else if (scan_mode == BT_SCAN_SIMPLE)
             display_obj.tft.drawCentreString("Simple Sniff", TFT_WIDTH / 2, 16, 2);
           else if (scan_mode == BT_SCAN_SIMPLE_TWO)
@@ -6086,6 +6260,121 @@ String WiFiScan::processPwnagotchiBeacon(const uint8_t* frame, int length) {
     Serial.println(F("Not a Pwnagotchi frame."));
     return "";
   }
+}
+
+// ============================================================================
+// ANTI-PRIVACY DETECTION HELPERS
+// ============================================================================
+
+// Check if MAC address matches known Flock Safety OUI prefixes
+bool WiFiScan::checkFlockMacOUI(const char* mac_addr) {
+  if (mac_addr == nullptr || strlen(mac_addr) < 8) {
+    return false;
+  }
+
+  // Extract first 8 characters (XX:XX:XX format)
+  char mac_prefix[9];
+  strncpy(mac_prefix, mac_addr, 8);
+  mac_prefix[8] = '\0';
+
+  // Convert to lowercase for comparison
+  for (int i = 0; i < 8; i++) {
+    mac_prefix[i] = tolower(mac_prefix[i]);
+  }
+
+  // Check against all known Flock Safety OUIs
+  for (int i = 0; i < 20; i++) {
+    if (strncmp(mac_prefix, flock_mac_oui[i], 8) == 0) {
+      Serial.print(F("[FLOCK] MAC OUI match detected: "));
+      Serial.println(mac_prefix);
+      return true;
+    }
+  }
+
+  return false;
+}
+
+// Check if MAC address matches known proximity marketing beacon OUI prefixes
+bool WiFiScan::checkProximityBeaconOUI(const char* mac_addr) {
+  if (mac_addr == nullptr || strlen(mac_addr) < 8) {
+    return false;
+  }
+
+  // Extract first 8 characters (XX:XX:XX format)
+  char mac_prefix[9];
+  strncpy(mac_prefix, mac_addr, 8);
+  mac_prefix[8] = '\0';
+
+  // Convert to lowercase for comparison
+  for (int i = 0; i < 8; i++) {
+    mac_prefix[i] = tolower(mac_prefix[i]);
+  }
+
+  // Check against all known proximity beacon OUIs
+  for (int i = 0; i < 15; i++) {
+    if (strncmp(mac_prefix, proximity_beacon_oui[i], 8) == 0) {
+      Serial.print(F("[PROX] Proximity beacon OUI match: "));
+      Serial.println(mac_prefix);
+      return true;
+    }
+  }
+
+  return false;
+}
+
+// Check if BLE service UUID matches Raven gunshot detector signatures
+bool WiFiScan::checkRavenServiceUUID(const char* uuid) {
+  if (uuid == nullptr) {
+    return false;
+  }
+
+  // Convert UUID to lowercase for comparison
+  String uuid_lower = String(uuid);
+  uuid_lower.toLowerCase();
+
+  // Check against all known Raven service UUIDs
+  for (int i = 0; i < 8; i++) {
+    String raven_uuid = String(raven_service_uuids[i]);
+    raven_uuid.toLowerCase();
+
+    if (uuid_lower.equals(raven_uuid)) {
+      Serial.print(F("[RAVEN] Service UUID match: "));
+      Serial.println(uuid);
+      return true;
+    }
+  }
+
+  return false;
+}
+
+// Get human-readable description for Raven service UUID
+String WiFiScan::getRavenServiceDescription(const char* uuid) {
+  if (uuid == nullptr) {
+    return "Unknown";
+  }
+
+  String uuid_lower = String(uuid);
+  uuid_lower.toLowerCase();
+
+  // Map UUIDs to descriptions
+  if (uuid_lower.equals("0000180a-0000-1000-8000-00805f9b34fb"))
+    return "Device Information";
+  else if (uuid_lower.equals("00003100-0000-1000-8000-00805f9b34fb"))
+    return "GPS Location (FW 1.2.0+)";
+  else if (uuid_lower.equals("00003200-0000-1000-8000-00805f9b34fb"))
+    return "Power/Battery (FW 1.2.0+)";
+  else if (uuid_lower.equals("00003300-0000-1000-8000-00805f9b34fb"))
+    return "Network Status (FW 1.2.0+)";
+  else if (uuid_lower.equals("00003400-0000-1000-8000-00805f9b34fb"))
+    return "Upload Stats (FW 1.2.0+)";
+  else if (uuid_lower.equals("00003500-0000-1000-8000-00805f9b34fb"))
+    return "Error/Failure (FW 1.2.0+)";
+  else if (uuid_lower.equals("00001809-0000-1000-8000-00805f9b34fb"))
+    return "Health (FW 1.1.7 Legacy)";
+  else if (uuid_lower.equals("00001819-0000-1000-8000-00805f9b34fb"))
+    return "Location (FW 1.1.7 Legacy)";
+  else
+    return "Unknown Service";
 }
 
 // PINEAPPLE LOGIC
@@ -7183,19 +7472,42 @@ void WiFiScan::beaconSnifferCallback(void* buf, wifi_promiscuous_pkt_type_t type
 
         Serial.println(probe_req_essid);
 
+        // Extract MAC address first
+        char addr[] = "00:00:00:00:00:00";
+        getMAC(addr, snifferPacket->payload, 10);
 
+        // Check for SSID pattern match OR MAC OUI match
+        bool ssid_match = false;
         for (int i = 0; i < sizeof(flock_ssid)/sizeof(wifi_scan_obj.flock_ssid[0]); i++) {
           if (strcasestr(probe_req_essid.c_str(), wifi_scan_obj.flock_ssid[i])) {
+            ssid_match = true;
+            break;
+          }
+        }
+
+        // Check MAC OUI even if SSID doesn't match
+        bool mac_match = wifi_scan_obj.checkFlockMacOUI(addr);
+
+        if (ssid_match || mac_match) {
             //Serial.print(F("Probe Request: "));
             //Serial.println(probe_req_essid);
 
-            char addr[] = "00:00:00:00:00:00";
-            getMAC(addr, snifferPacket->payload, 10);
+            // Determine detection method for display
+            String detection_method = "";
+            if (ssid_match && mac_match) {
+              detection_method = " [SSID+MAC]";
+            } else if (mac_match) {
+              detection_method = " [MAC-OUI]";
+            } else {
+              detection_method = " [SSID]";
+            }
+
             #ifdef HAS_SCREEN
               display_string.concat(MAGENTA_KEY);
               display_string.concat((String)snifferPacket->rx_ctrl.rssi);
               display_string.concat(" ");
               display_string.concat(addr);
+              display_string.concat(detection_method);
               display_string.concat(" -> ");
               display_string.concat(probe_req_essid);
 
@@ -7218,7 +7530,6 @@ void WiFiScan::beaconSnifferCallback(void* buf, wifi_promiscuous_pkt_type_t type
             Serial.println(display_string);
 
             buffer_obj.append(snifferPacket, len);
-            break;
           }
         }
       }
@@ -7230,18 +7541,42 @@ void WiFiScan::beaconSnifferCallback(void* buf, wifi_promiscuous_pkt_type_t type
 
           Serial.println(essid);
 
+          // Extract MAC address first
+          char addr[] = "00:00:00:00:00:00";
+          getMAC(addr, snifferPacket->payload, 10);
+
+          // Check for SSID pattern match OR MAC OUI match
+          bool ssid_match = false;
           for (int i = 0; i < sizeof(flock_ssid)/sizeof(wifi_scan_obj.flock_ssid[0]); i++) {
             if (strcasestr(essid.c_str(), wifi_scan_obj.flock_ssid[i])) {
+              ssid_match = true;
+              break;
+            }
+          }
+
+          // Check MAC OUI even if SSID doesn't match
+          bool mac_match = wifi_scan_obj.checkFlockMacOUI(addr);
+
+          if (ssid_match || mac_match) {
               //Serial.print(F("Beacon : "));
               //Serial.println(essid);
 
-              char addr[] = "00:00:00:00:00:00";
-              getMAC(addr, snifferPacket->payload, 10);
+              // Determine detection method for display
+              String detection_method = "";
+              if (ssid_match && mac_match) {
+                detection_method = " [SSID+MAC]";
+              } else if (mac_match) {
+                detection_method = " [MAC-OUI]";
+              } else {
+                detection_method = " [SSID]";
+              }
+
               #ifdef HAS_SCREEN
                 display_string.concat(GREEN_KEY);
                 display_string.concat((String)snifferPacket->rx_ctrl.rssi);
                 display_string.concat(" ");
                 display_string.concat(addr);
+                display_string.concat(detection_method);
                 display_string.concat(" -> ");
                 display_string.concat(essid);
 
@@ -7264,9 +7599,7 @@ void WiFiScan::beaconSnifferCallback(void* buf, wifi_promiscuous_pkt_type_t type
               Serial.println(display_string);
 
               buffer_obj.append(snifferPacket, len);
-              break;
             }
-          }
         }
       }
     }

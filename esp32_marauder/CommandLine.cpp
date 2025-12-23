@@ -572,7 +572,7 @@ void CommandLine::runCommand(String input) {
           int flk_sw = this->argSearch(&cmd_args, "-f");
 
           if (flk_sw == -1) {
-            Serial.println("Starting Flock Wardrive. Stop with " + (String)STOPSCAN_CMD);
+            Serial.println("Starting Anti-Privacy Wardrive (Flock/Raven/Beacons). Stop with " + (String)STOPSCAN_CMD);
             #ifdef HAS_SCREEN
               display_obj.clearScreen();
               menu_function_obj.drawStatusBar();
@@ -1112,7 +1112,7 @@ void CommandLine::runCommand(String input) {
             wifi_scan_obj.StartScan(BT_SCAN_FLIPPER, TFT_ORANGE);
           }
           else if (bt_type == "flock") {
-            Serial.println("Starting Flock sniff. Stop with " + (String)STOPSCAN_CMD);
+            Serial.println("Starting Anti-Privacy Scan (Flock/Raven/Beacons). Stop with " + (String)STOPSCAN_CMD);
             #ifdef HAS_SCREEN
               display_obj.clearScreen();
               menu_function_obj.drawStatusBar();
